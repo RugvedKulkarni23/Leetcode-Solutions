@@ -8,18 +8,22 @@
  */
 class Solution {
 public:
+    //Floyd cycle detection Algorithm
     bool hasCycle(ListNode *head) {
-          if(head==NULL){
-              return false;
-          }
-        ListNode*temp = head;
-        map<ListNode*,bool> visited;
-        while(temp!=NULL){
-            if(visited[temp]==true){
-                 return true;
+        if(head==NULL || head->next==NULL){
+             return false;
+        }
+        ListNode*slow = head;
+        ListNode*fast = head;
+        while(fast!=NULL && slow!=NULL){
+            fast=fast->next;
+            if(fast!=NULL){
+                fast=fast->next;
             }
-            visited[temp]=true;
-            temp=temp->next;
+            slow = slow->next;
+            if(slow==fast){
+                return true;
+            }
         }
         return false;
     }
