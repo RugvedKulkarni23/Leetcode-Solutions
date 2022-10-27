@@ -11,27 +11,47 @@
 class Solution {
 public:
     
-    bool checkpalindrome(vector<int> arr){
-          int n = arr.size();
-          int s = 0;
-          int e = n-1;
-          while(s<=e){
-              if(arr[s]!=arr[e]){
-                  return false;
-              }
-              s++;
-              e--;
-          }
-        return true;
+    ListNode* findmiddle(ListNode*head){
+        ListNode*slow = head;
+        ListNode*fast = head->next;
+        while(fast!=NULL  && fast->next!=NULL){
+               fast = fast->next->next;
+               slow = slow->next;
+            
+        }
+        return slow;
     }
-    
-    bool isPalindrome(ListNode* head) {
-         vector<int> arr;
-         ListNode*temp = head;
-         while(temp!=NULL){
-              arr.push_back(temp->val);
-              temp = temp->next;
+    ListNode* reverse(ListNode*head){
+         ListNode*previous = NULL;
+         ListNode*current = head;
+         ListNode*forward = NULL;
+         while(current!=NULL){
+              forward = current->next;
+              current->next = previous;
+              previous = current;
+              current = forward;
          }
-        return checkpalindrome(arr);
+        return previous;
+    }
+    bool isPalindrome(ListNode* head) {
+        //For single element
+        if(head->next==NULL){
+            return true;
+        }
+        ListNode*middle = findmiddle(head);
+        ListNode*temp = middle->next;
+        middle->next = reverse(temp);
+        ListNode*head1 = head;
+        ListNode*head2 = middle->next;
+        while(head2!=NULL){
+            if(head1->val!=head2->val){
+                return false;
+            }
+            head1 = head1->next;
+            head2 = head2->next;
+        }
+        temp = middle->next;
+        middle->next = reverse(temp);
+        return true;
     }
 };
